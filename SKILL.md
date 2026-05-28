@@ -1,8 +1,8 @@
 ---
 name: resume-writing
-description: "互联网行业通用简历写作辅助，覆盖产品/技术/设计/运营/市场/数据/职能等12个序列。通过结构化采访 + 序列能力焦点模板自动生成简历。支持多AI Agent运行（Hermes/Cursor/Windsurf/Claude Code等）。3种模式：从0开始 / 优化 / 提炼。支持JD匹配与定向改写。"
-version: 2.1.0
-author: Victoria
+description: "互联网行业通用简历写作辅助，覆盖产品/技术/设计/运营/市场/数据/职能等多个序列。通过结构化采访 + 岗位能力焦点模板，自动生成核心优势、工作经历、项目经历。3种模式：从0开始 / 基于现有简历优化 / 从文档提炼。"
+version: 2.2.0
+author: Resume Writing Skill Team
 tags: [resume, interview, career, 求职, product, engineer, design, data, marketing, finance, hr]
 ---
 
@@ -220,7 +220,7 @@ tags: [resume, interview, career, 求职, product, engineer, design, data, marke
 
 ### 内容质量（核心：首版即交付）
 
-用户不会花时间精修迭代，**首版生成的简历质量即决定了用户体验和口碑传播**。因此：
+**首版生成的简历质量即决定了用户体验和口碑传播**。因此：
 
 - **每条要点必须以量化结果或明确的业务贡献结尾** — 这是简历的硬通货，没有数据的经历等于没写
 - 禁止模糊表述("负责"/"参与"/"协助"必须转化为具体动作+结果)
@@ -638,14 +638,14 @@ CI/CD 流水线 · 掌握 · 搭建了团队自动构建和部署流水线，部
 
 ### Step 5: 导出简历文件
 
-简历生成后，按以下优先级保存交付：
+简历生成后，按以下格式保存交付到用户指定的目录（如 `~/Desktop/`）：
 
-1. **Markdown 源文件**：保存到 VBrain 路径（见下文"保存路径"）
-2. **PDF 副本**：用 pandoc 或 weasyprint 转换 markdown 为 PDF，存一份到 `~/Desktop/` 方便用户直接打开投递
-3. **Word (.docx)**：用 pandoc 转换 markdown 为 docx，存到桌面
-4. **纯文本 (.txt)**：用 pandoc 或直接去除 markdown 格式符号，存到桌面
+1. **Markdown 源文件**（必存）：`V{version}_{岗位方向}.md`
+2. **PDF 副本**（可选）：如有 pandoc 或 weasyprint，转换一份 PDF
+3. **Word (.docx)**（可选）：如有 pandoc，转换一份 docx
+4. **纯文本 (.txt)**（可选）：去除 markdown 格式符号
 
-> 如果没有 pandoc/weasyprint，至少保证 markdown 和纯文本格式。告知用户"已保存 markdown 和 txt 到桌面，如需 PDF/Word 请安装 pandoc 后重新导出"。
+> 如果没有 pandoc/weasyprint，至少保证 markdown 格式。
 
 命名格式：`V{version}_{岗位方向}.{md/pdf/docx/txt}`
 
@@ -671,20 +671,18 @@ CI/CD 流水线 · 掌握 · 搭建了团队自动构建和部署流水线，部
 ## 保存路径
 
 ### 简历文件
-生成后存到：
-```
-60-Project-Output/OPC-AI求职辅导/简历版本/V{version_number}_{岗位方向}.md
-```
-版本号：V1_原始简历 / V2_{方向} / V3递增
 
-同时建议交付一份 PDF 到桌面（`~/Desktop/`），方便用户直接打开投递。用户在 Obsidian VBrain 路径外通常无法第一时间找到文件。
+生成后按以下规则保存：
+```markdown
+{VERSION}_{ROLE_DIRECTION}.md
+```
+例如：`V1_后端工程师_P7.md`
 
-### 项目文档（PRD、原型、产品规划等）
-当基于本 skill 延伸产出产品文档（如 PRD、设计规范、产品规划、原型说明等），**不要存入 skill 目录内**，应存到项目对应的输出文件夹：
-```
-60-Project-Output/OPC-AI求职辅导/策略与方法/{文档名称}.md
-```
-或按项目实际目录结构存放。Skill 是方法库，不是项目文档仓库。
+版本号递增：V1 / V2 / V3 ...
+
+### 输出目录
+
+默认保存到当前工作目录。用户也可以指定其他路径，如 `~/Desktop/`。
 
 ---
 
@@ -700,11 +698,6 @@ CI/CD 流水线 · 掌握 · 搭建了团队自动构建和部署流水线，部
 8. **模式二不推翻原简历**：保留用户已确认的信息，只增补和优化不重写
 9. **模式三不编造文档外信息**：严格基于文档内容提取，缺失部分标记由用户补充
 10. **拆分经历与项目**：原简历常见的"大段混排"问题（工作经历要点和项目经历混在同一个bullet list里），必须先拆分。日常职责放工作经历，有完整背景需放项目经历。
-
-### 项目文档存放纪律
-- 简历文件存到 `简历版本/` 目录
-- **PRD、设计规范、产品原型说明等扩展文档 → 项目输出目录**（如 `策略与方法/` 或项目指定路径），严禁存到 skill 目录下
-- 每次产出项目文档前确认正确的输出路径，不确定时间用户
 11. **已有信息优先输出**：模式二下，原简历提供的信息足够支撑优化版时就直接输出，不需要先追问。输出后附改动说明，用户不满意再迭代。
 12. **时间线倒序是强制要求**：输出时严格按倒序排列（最近的工作在最前）。
 13. **跨行业经验处理**：多公司经历且岗位不完全一致时，不删除"不相关"经历，缩短篇幅弱化处理，保留职业发展完整性同时突出目标岗位相关经历。
@@ -765,13 +758,9 @@ CI/CD 流水线 · 掌握 · 搭建了团队自动构建和部署流水线，部
 ---
 
 ## 参考
-- 适用于 Hermes Agent + Obsidian 工作流
-- 输出到 `60-Project-Output/OPC-AI求职辅导/简历版本/`
-- 配合 product-strategy-interview 技能可做产品策略类面试辅导联动
-- Obsidian 外发副本：`60-Project-Output/OPC-AI求职辅导/策略与方法/简历写作SKILL.md`
-- **数字化产品延伸**：本 skill 已扩展为 Resume Writing Agent Web UI（对话式简历生成应用），PRD 及 Clean Crisp 设计规范在 `60-Project-Output/OPC-AI求职辅导/策略与方法/Resume写作Agent_WebUI_PRD.md`，HTML 原型在 `~/resume-agent-sketches/variant-01-clean-crisp/index.html`
+- 适用于各种支持 SKILL.md 格式的 AI Agent（Hermes / Cursor / Windsurf / Claude Code / Codex / Gemini CLI 等）
 - **参考文件**：（使用 skill_view 加载）
-  - `references/resume-diagnostic-checklist.md` — 模式二6步诊断清单：混排检查/弱动词比例/量化缺失/约束条件/时间线/优势佐证（所有序列通用）
+  - `references/resume-diagnostic-checklist.md` — 简历诊断清单
   - `references/weak-verb-replacement-table.md` — 弱动词→强动词替换表
   - `references/role-verb-and-template-guide.md` — 各序列动词库+改写示例
-  - `references/multi-agent-install.md` — 多AI Agent安装路径一览
+  - `references/multi-agent-install.md` — 多AI Agent安装路径
